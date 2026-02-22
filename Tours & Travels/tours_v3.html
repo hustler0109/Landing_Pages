@@ -1408,37 +1408,26 @@ footer{
     <div class="section-eyebrow fade-up" style="justify-content:center">Free Revenue Leak Audit</div>
     <h2 class="section-h2 fade-up fade-up-d1" style="text-align:center">Claim your <em>free 20-minute audit.</em><br>Find out exactly what you're leaking.</h2>
     <p style="text-align:center;font-size:17px;color:rgba(245,240,232,0.6);margin-bottom:8px;font-family:Raleway,sans-serif">Takes 3 minutes to fill. We do the math.</p>
-    <form class="form-grid" onsubmit="return false">
+    <form id="auditForm" class="form-grid" onsubmit="return handleToursSubmit(event)">
       <div class="form-field fade-up fade-up-d2">
-        <label class="form-label">Your Full Name</label>
-        <input type="text" class="form-input" placeholder="Rahul Sharma">
+        <label class="form-label">Your Name</label>
+        <input type="text" name="Name" class="form-input" placeholder="e.g. Rajesh Sharma" required>
       </div>
       <div class="form-field fade-up fade-up-d2">
+        <label class="form-label">Business / Franchise Name</label>
+        <input type="text" name="Business Name" class="form-input" placeholder="e.g. Sharma's Bakery" required>
+      </div>
+      <div class="form-field fade-up fade-up-d3">
+        <label class="form-label">Email</label>
+        <input type="email" name="Email" class="form-input" placeholder="you@yourbusiness.com" required>
+      </div>
+      <div class="form-field fade-up fade-up-d3">
         <label class="form-label">WhatsApp Number</label>
-        <input type="tel" class="form-input" placeholder="+91 98765 43210">
-      </div>
-      <div class="form-field fade-up fade-up-d3">
-        <label class="form-label">Business / Agency Name</label>
-        <input type="text" class="form-input" placeholder="Mountain Trails Adventures">
-      </div>
-      <div class="form-field fade-up fade-up-d3">
-        <label class="form-label">Email Address</label>
-        <input type="email" class="form-input" placeholder="rahul@yourtours.com">
+        <input type="tel" name="WhatsApp Number" class="form-input" placeholder="+91 98XXXXXXXX" required>
       </div>
       <div class="form-field fade-up fade-up-d4">
-        <label class="form-label">Average Package Value Per Booking</label>
-        <select class="form-select">
-          <option value="">Select range</option>
-          <option>Under ₹15,000</option>
-          <option>₹15,000 – ₹40,000</option>
-          <option>₹40,000 – ₹1,00,000</option>
-          <option>₹1,00,000 – ₹3,00,000</option>
-          <option>Above ₹3,00,000</option>
-        </select>
-      </div>
-      <div class="form-field fade-up fade-up-d4">
-        <label class="form-label">Your Role in the Business</label>
-        <select class="form-select">
+        <label class="form-label">Your Role</label>
+        <select name="Your Role" class="form-select" required>
           <option value="">Select your role</option>
           <option>Founder / Owner</option>
           <option>Operations Head</option>
@@ -1447,36 +1436,49 @@ footer{
           <option>Other</option>
         </select>
       </div>
-      <div class="form-field fade-up fade-up-d5">
-        <label class="form-label">Monthly Inquiry Volume (Approx)</label>
-        <select class="form-select">
-          <option value="">How many inquiries/month?</option>
-          <option>Under 30</option>
-          <option>30 – 100</option>
-          <option>100 – 300</option>
-          <option>300+</option>
+      <div class="form-field fade-up fade-up-d4">
+        <label class="form-label">Business Type</label>
+        <select name="Business Type" class="form-select" required>
+          <option value="">Select type</option>
+          <option>Travel Agency (B2C)</option>
+          <option>Tour Operator</option>
+          <option>DMC (Destination Management)</option>
+          <option>Corporate Travel</option>
+          <option>Adventure / Niche Tourism</option>
+          <option>Luxury Travel</option>
+          <option>Online Travel (OTA)</option>
+          <option>Other</option>
         </select>
       </div>
       <div class="form-field fade-up fade-up-d5">
-        <label class="form-label">Primary Inquiry Channel</label>
-        <select class="form-select">
-          <option value="">Where do most leads come from?</option>
-          <option>WhatsApp</option>
-          <option>Instagram / Facebook DM</option>
-          <option>Website / Email</option>
-          <option>Google / JustDial</option>
-          <option>Referrals</option>
-          <option>Multiple Channels</option>
+        <label class="form-label">Number of Locations</label>
+        <select name="Number of Locations" class="form-select" required>
+          <option value="">Select range</option>
+          <option>1 location</option>
+          <option>2-3 locations</option>
+          <option>4-6 locations</option>
+          <option>7-10 locations</option>
+          <option>10+ locations</option>
+        </select>
+      </div>
+      <div class="form-field fade-up fade-up-d5">
+        <label class="form-label">Monthly Revenue (₹)</label>
+        <select name="Monthly Revenue" class="form-select" required>
+          <option value="">Select range</option>
+          <option>Under ₹5 Lakhs</option>
+          <option>₹5L - ₹15L</option>
+          <option>₹15L - ₹30L</option>
+          <option>₹30L - ₹50L</option>
+          <option>₹50L+</option>
         </select>
       </div>
       <div class="form-field full fade-up fade-up-d6">
-        <label class="form-label">Which tier are you most interested in?</label>
-        <select class="form-select">
-          <option value="">Tell us where you'd like to start</option>
-          <option>Tier 1 — Presence (Entry Infrastructure)</option>
-          <option>Tier 2 — Distinction (Advanced Conversion)</option>
-          <option>Tier 3 — Mastery (Full Revenue OS)</option>
-          <option>Not sure — show me what fits</option>
+        <label class="form-label">Which Level Interests You?</label>
+        <select name="Which Level Interests You?" class="form-select" id="levelSelect">
+          <option value="">Not sure yet — help me decide</option>
+          <option value="visibility">Tier 1 — Presence (Entry Infrastructure)</option>
+          <option value="control">Tier 2 — Distinction (Advanced Conversion)</option>
+          <option value="autonomy">Tier 3 — Mastery (Full Revenue OS)</option>
         </select>
       </div>
       <div class="form-field full fade-up fade-up-d6">
@@ -1604,6 +1606,45 @@ const dashObs=new IntersectionObserver((entries)=>{
 },{threshold:0.25});
 const dw=document.querySelector('.dashboard-wrap');
 if(dw)dashObs.observe(dw);
+
+// Form submit — sends to Node server (/api/submit), which writes to Airtable using .env
+function handleToursSubmit(e) {
+  e.preventDefault();
+  var form = document.getElementById('auditForm');
+  if (!form) return false;
+  var btn = form.querySelector('button[type="submit"]');
+  var data = new FormData(form);
+  var payload = {
+    'Name': data.get('Name') || '',
+    'Business Name': data.get('Business Name') || '',
+    'Email': data.get('Email') || '',
+    'WhatsApp Number': data.get('WhatsApp Number') || '',
+    'Your Role': data.get('Your Role') || '',
+    'Business Type': data.get('Business Type') || '',
+    'Number of Locations': data.get('Number of Locations') || '',
+    'Monthly Revenue': data.get('Monthly Revenue') || '',
+    'Which Level Interests You?': data.get('Which Level Interests You?') || '',
+    'Source': 'tours'
+  };
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  fetch('/api/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function(r) {
+    if (r.ok) {
+      if (btn) { btn.style.background = 'var(--coral)'; btn.textContent = '✓ Audit Request Sent! We\'ll call within 4 hours.'; btn.disabled = true; }
+      form.reset();
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = 'Claim My Free Revenue Leak Audit →'; }
+      alert('Something went wrong. Please try again or contact us directly.');
+    }
+  }).catch(function() {
+    if (btn) { btn.disabled = false; btn.textContent = 'Claim My Free Revenue Leak Audit →'; }
+    alert('Something went wrong. Please try again or contact us directly.');
+  });
+  return false;
+}
 </script>
 </body>
 </html>

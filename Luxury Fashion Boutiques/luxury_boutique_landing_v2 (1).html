@@ -924,6 +924,137 @@ input:focus, select:focus {
   text-align: center;
 }
 
+/* Form wrap – same structure as clinic/food (luxury theme) */
+.form-wrap {
+  margin-bottom: clamp(12px, 1.5vw, 16px);
+}
+.form-wrap h3 {
+  font-family: var(--font-sans);
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.form-wrap > p {
+  text-align: center;
+  margin-bottom: clamp(20px, 2.5vw, 28px);
+  font-size: clamp(13px, 1.3vw, 15px);
+  color: rgba(245,239,228,0.6);
+}
+.form-wrap .form-group {
+  margin-bottom: clamp(14px, 1.8vw, 20px);
+  opacity: 0;
+  transform: translateY(10px);
+}
+.form-wrap .form-group.animate-ready {
+  opacity: 1;
+  transform: translateY(0);
+}
+.form-wrap .form-group label {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(245,239,228,0.45);
+  margin-bottom: 8px;
+  display: block;
+}
+.form-wrap .form-group input,
+.form-wrap .form-group select {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(245,239,228,0.03);
+  border: 1px solid var(--border);
+  color: var(--parchment);
+  font-family: var(--font-body);
+  font-size: clamp(15px, 1.4vw, 17px);
+  outline: none;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-wrap .form-group input:focus,
+.form-wrap .form-group select:focus {
+  border-color: var(--border-strong);
+  background: rgba(184,150,80,0.06);
+  box-shadow: 0 4px 12px rgba(184,150,80,0.15);
+}
+.form-wrap .form-group input::placeholder {
+  color: rgba(245,239,228,0.25);
+}
+.form-wrap .form-group select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23B89650' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+.form-wrap .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 1.5vw, 20px);
+}
+@media (max-width: 640px) {
+  .form-wrap .form-row { grid-template-columns: 1fr; }
+}
+.form-wrap .form-submit {
+  width: 100%;
+  margin-top: clamp(20px, 2.5vw, 28px);
+  padding: clamp(15px, 1.8vw, 20px);
+  font-family: var(--font-sans);
+  font-size: clamp(9px, 1vw, 11px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.form-wrap .form-submit:hover {
+  background: var(--gold-bright);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(184,150,80,0.4);
+}
+.form-wrap .form-submit:active {
+  transform: scale(0.98);
+}
+.form-wrap .form-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: clamp(12px, 1.5vw, 16px);
+  font-size: clamp(9px, 1vw, 11px);
+  color: rgba(245,239,228,0.4);
+}
+.form-wrap .form-trust span:first-child {
+  color: var(--gold);
+}
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(10px, 1.5vw, 24px);
+  margin-top: clamp(12px, 1.5vw, 16px);
+}
+.trust-row .trust-item {
+  font-size: clamp(11px, 1.1vw, 13px);
+  color: rgba(245,239,228,0.5);
+}
+.trust-row .trust-item::before {
+  content: '✓ ';
+  color: var(--gold);
+  font-weight: 700;
+}
+
 /* ─── FAQ ─────────────────────────────────────────────────────────────── */
 .faq {
   background: var(--ink-light);
@@ -1345,32 +1476,33 @@ footer {
     <div class="form-right reveal reveal-d2">
       <div class="audit-form" id="auditFormCard">
         <div id="formBody">
-          <div class="form-title">Reserve Your Audit</div>
-          <form id="leadForm" onsubmit="handleFormSubmit(event)">
-            <div class="field-group">
-              <div class="field-wrapper" data-form-field="1">
-                <label class="field-label">Your Name</label>
-                <input type="text" placeholder="First & Last Name" required>
+          <div class="form-wrap" data-animate="form-wrap">
+            <h3>Reserve Your Audit</h3>
+            <p>We'll show you the exact rupee value of your unanswered enquiries. Our team will reach out within 4 hours.</p>
+            <form id="leadForm" onsubmit="handleFormSubmit(event)">
+              <div class="form-group" data-form-field="1">
+                <label>Your Name</label>
+                <input type="text" name="Name" placeholder="e.g. Rajesh Sharma" required>
               </div>
-              <div class="field-wrapper" data-form-field="2">
-                <label class="field-label">Boutique Name</label>
-                <input type="text" placeholder="Your boutique's name" required>
+              <div class="form-group" data-form-field="2">
+                <label>Business / Franchise Name</label>
+                <input type="text" name="Business Name" placeholder="e.g. Sharma's Bakery" required>
               </div>
-              <div class="field-row">
-                <div class="field-wrapper" data-form-field="3">
-                  <label class="field-label">Email</label>
-                  <input type="email" placeholder="you@yourboutique.com" required>
+              <div class="form-row">
+                <div class="form-group" data-form-field="3">
+                  <label>Email</label>
+                  <input type="email" name="Email" placeholder="you@yourbusiness.com" required>
                 </div>
-                <div class="field-wrapper" data-form-field="4">
-                  <label class="field-label">WhatsApp Number</label>
-                  <input type="tel" placeholder="+91 98XXX XXXXX" required>
+                <div class="form-group" data-form-field="4">
+                  <label>WhatsApp Number</label>
+                  <input type="tel" name="WhatsApp Number" placeholder="+91 98XXXXXXXX" required>
                 </div>
               </div>
-              <div class="field-row">
-                <div class="field-wrapper" data-form-field="5">
-                  <label class="field-label">Your Role</label>
-                  <select required>
-                    <option value="" disabled selected>Select your role</option>
+              <div class="form-row">
+                <div class="form-group" data-form-field="5">
+                  <label>Your Role</label>
+                  <select name="Your Role" required>
+                    <option value="">Select your role</option>
                     <option>Founder / Owner</option>
                     <option>Director / CEO</option>
                     <option>Store Manager</option>
@@ -1378,10 +1510,10 @@ footer {
                     <option>Other</option>
                   </select>
                 </div>
-                <div class="field-wrapper" data-form-field="6">
-                  <label class="field-label">Boutique Type</label>
-                  <select required>
-                    <option value="" disabled selected>Select type</option>
+                <div class="form-group" data-form-field="6">
+                  <label>Business Type</label>
+                  <select name="Business Type" required>
+                    <option value="">Select type</option>
                     <option>Luxury Fashion</option>
                     <option>Bridal & Couture</option>
                     <option>Designer Boutique</option>
@@ -1391,33 +1523,53 @@ footer {
                   </select>
                 </div>
               </div>
-              <div class="field-row">
-                <div class="field-wrapper" data-form-field="7">
-                  <label class="field-label">Monthly Revenue (Approximate)</label>
-                  <select required>
-                    <option value="" disabled selected>Select a range</option>
-                    <option>₹5 Lakh – ₹15 Lakh</option>
-                    <option>₹15 Lakh – ₹40 Lakh</option>
-                    <option>₹40 Lakh – ₹1 Crore</option>
-                    <option>Above ₹1 Crore</option>
+              <div class="form-row">
+                <div class="form-group" data-form-field="7">
+                  <label>Number of Locations</label>
+                  <select name="Number of Locations" required>
+                    <option value="">Select range</option>
+                    <option>1 location</option>
+                    <option>2-3 locations</option>
+                    <option>4-6 locations</option>
+                    <option>7-10 locations</option>
+                    <option>10+ locations</option>
                   </select>
                 </div>
-                <div class="field-wrapper" data-form-field="8">
-                  <label class="field-label">How do clients reach you today?</label>
-                  <select required>
-                    <option value="" disabled selected>Primary channel</option>
-                    <option>Instagram DMs</option>
-                    <option>WhatsApp only</option>
-                    <option>Instagram + WhatsApp</option>
-                    <option>Website enquiries</option>
-                    <option>Walk-ins + all of above</option>
+                <div class="form-group" data-form-field="8">
+                  <label>Monthly Revenue (₹)</label>
+                  <select name="Monthly Revenue" required>
+                    <option value="">Select range</option>
+                    <option>Under ₹5 Lakhs</option>
+                    <option>₹5L - ₹15L</option>
+                    <option>₹15L - ₹30L</option>
+                    <option>₹30L - ₹50L</option>
+                    <option>₹50L+</option>
                   </select>
                 </div>
               </div>
-            </div>
-            <button class="btn-submit" type="submit">Show Me My Revenue Leak →</button>
-          </form>
-          <div class="form-footnote">No sales call. Just the number.</div>
+              <div class="form-group" data-form-field="9">
+                <label>Which Level Interests You?</label>
+                <select id="levelSelect" name="Which Level Interests You?">
+                  <option value="">Not sure yet — help me decide</option>
+                  <option value="visibility">Level 01 — Visibility (See Every Enquiry)</option>
+                  <option value="control">Level 02 — Control (Capture & Convert)</option>
+                  <option value="autonomy">Level 03 — Autonomous (AI Runs Your Pipeline)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn form-submit primary-cta">
+                <span>Show Me My Revenue Leak →</span>
+              </button>
+              <div class="form-trust">
+                <span>🔒</span>
+                <span>No spam. No obligation. Your data stays private.</span>
+              </div>
+            </form>
+          </div>
+          <div class="trust-row">
+            <div class="trust-item" data-trust="1">No credit card</div>
+            <div class="trust-item" data-trust="2">20-minute call</div>
+            <div class="trust-item" data-trust="3">Zero obligation</div>
+          </div>
         </div>
         <div class="success-message" id="successMsg">
           <div class="success-icon">✅</div>
@@ -2095,43 +2247,44 @@ if (leakEl) {
       });
     });
 
-    // Form field animations (GSAP for consistency with section reveals)
-    const formCard = document.getElementById('auditFormCard');
-    if (formCard) {
-      const formObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !formCard.classList.contains('form-animated')) {
-            formCard.classList.add('form-animated');
-            const formFields = formCard.querySelectorAll('.field-wrapper');
-            const submitBtn = formCard.querySelector('.btn-submit');
-            gsap.to(formFields, {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: 'expo.out',
-              stagger: 0.08,
-              delay: 0.2,
-              force3D: true
-            });
-            if (submitBtn) {
-              gsap.to(submitBtn, {
-                opacity: 1,
-                scale: 1,
-                duration: 0.5,
-                ease: 'back.out(1.2)',
-                delay: 0.2 + formFields.length * 0.08,
-                force3D: true
-              });
-            }
-            formObserver.unobserve(formCard);
-          }
+    // Form wrap + form-group reveal (same pattern as clinic/food)
+    const formWrap = document.querySelector('.form-wrap');
+    if (formWrap && typeof ScrollTrigger !== 'undefined') {
+      gsap.set(formWrap, { opacity: 1, scale: 1, y: 0 });
+      gsap.from(formWrap, {
+        opacity: 0,
+        scale: 0.95,
+        y: 30,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: formWrap, start: 'top 85%', toggleActions: 'play none none none', once: true }
+      });
+      const formGroups = formWrap.querySelectorAll('.form-group');
+      formGroups.forEach((group, index) => {
+        gsap.set(group, { opacity: 1, y: 0 });
+        gsap.from(group, {
+          opacity: 0,
+          y: 20,
+          duration: 0.5,
+          ease: 'power2.out',
+          delay: index * 0.08,
+          scrollTrigger: { trigger: formWrap, start: 'top 85%', toggleActions: 'play none none none', once: true },
+          onComplete: function() { group.classList.add('animate-ready'); }
         });
-      }, { threshold: 0.3 });
-      formObserver.observe(formCard);
+      });
+      ScrollTrigger.create({
+        trigger: formWrap,
+        start: 'top 85%',
+        once: true,
+        onEnter: function() { formWrap.classList.add('animate-ready'); }
+      });
+    } else if (formWrap) {
+      formWrap.classList.add('animate-ready');
+      formWrap.querySelectorAll('.form-group').forEach(g => g.classList.add('animate-ready'));
     }
 
     // Form field focus animations
-    document.querySelectorAll('.field-wrapper input, .field-wrapper select').forEach(field => {
+    document.querySelectorAll('.form-wrap .form-group input, .form-wrap .form-group select').forEach(field => {
       field.addEventListener('focus', function() {
         this.style.transform = 'translateY(-1px)';
       });
@@ -2180,47 +2333,57 @@ if (leakEl) {
   }
 })();
 
-// Form submit handler
+// Form submit handler — sends to Node server (/api/submit), which writes to Airtable using .env
 function handleFormSubmit(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('button[type="submit"]');
-  const formTitle = document.querySelector('.form-title');
-  const formFootnote = document.querySelector('.form-footnote');
-  const leadForm = document.getElementById('leadForm');
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const formBody = document.getElementById('formBody');
   const successMsg = document.getElementById('successMsg');
-  
-  if (btn) {
-    // Animate button success state
-    btn.style.background = '#22c55e';
-    btn.innerHTML = '✓ Audit Request Sent! We\'ll call you within 4 hours.';
-    btn.disabled = true;
-    
-    // Hide form elements with fade
-    setTimeout(() => {
-      if (formTitle) formTitle.style.display = 'none';
-      if (formFootnote) formFootnote.style.display = 'none';
-      if (leadForm) leadForm.style.display = 'none';
-      if (successMsg) {
-        successMsg.classList.add('show');
-        if (typeof gsap !== 'undefined') {
-          gsap.from(successMsg, {
-            opacity: 0,
-            scale: 0.9,
-            duration: 0.5,
-            delay: 0.1,
-            ease: 'expo.out'
-          });
-        }
+  const data = new FormData(form);
+  const payload = {
+    'Name': data.get('Name') || '',
+    'Business Name': data.get('Business Name') || '',
+    'Email': data.get('Email') || '',
+    'WhatsApp Number': data.get('WhatsApp Number') || '',
+    'Your Role': data.get('Your Role') || '',
+    'Business Type': data.get('Business Type') || '',
+    'Number of Locations': '',
+    'Monthly Revenue': data.get('Monthly Revenue') || '',
+    'Which Level Interests You?': data.get('Which Level Interests You?') || '',
+    'Source': 'luxury_boutique'
+  };
+  if (btn) { const s = btn.querySelector('span'); if (s) s.textContent = 'Sending…'; btn.disabled = true; }
+  fetch('/api/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function(r) {
+    if (r.ok) {
+      if (btn) {
+        btn.style.background = '#22c55e';
+        const span = btn.querySelector('span');
+        if (span) span.textContent = '✓ Audit Request Sent! We\'ll call you within 4 hours.';
+        btn.disabled = true;
       }
-    }, 300);
-    
-    // Reset after 4 seconds (optional)
-    setTimeout(() => {
-      btn.style.background = '';
-      btn.innerHTML = 'Show Me My Revenue Leak →';
-      btn.disabled = false;
-    }, 4000);
-  }
+      setTimeout(() => {
+        if (formBody) formBody.style.display = 'none';
+        if (successMsg) {
+          successMsg.classList.add('show');
+          if (typeof gsap !== 'undefined') {
+            gsap.from(successMsg, { opacity: 0, scale: 0.9, duration: 0.5, delay: 0.1, ease: 'expo.out' });
+          }
+        }
+      }, 300);
+      form.reset();
+    } else {
+      if (btn) { btn.disabled = false; const s = btn.querySelector('span'); if (s) s.textContent = 'Show Me My Revenue Leak →'; }
+      alert('Something went wrong. Please try again or contact us directly.');
+    }
+  }).catch(function() {
+    if (btn) { btn.disabled = false; const s = btn.querySelector('span'); if (s) s.textContent = 'Show Me My Revenue Leak →'; }
+    alert('Something went wrong. Please try again or contact us directly.');
+  });
 }
 </script>
 

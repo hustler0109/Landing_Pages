@@ -1236,26 +1236,26 @@
     <form id="auditForm" onsubmit="handleAuditSubmit(event)">
       <div class="form-group" data-form-field="1">
         <label>Your Name</label>
-        <input type="text" placeholder="e.g. Rajesh Sharma" required>
+        <input type="text" name="Name" placeholder="e.g. Rajesh Sharma" required>
       </div>
       <div class="form-group" data-form-field="2">
         <label>Business / Franchise Name</label>
-        <input type="text" placeholder="e.g. Sharma's Bakery" required>
+        <input type="text" name="Business Name" placeholder="e.g. Sharma's Bakery" required>
       </div>
       <div class="form-row">
         <div class="form-group" data-form-field="3">
           <label>Email</label>
-          <input type="email" placeholder="you@yourbusiness.com" required>
+          <input type="email" name="Email" placeholder="you@yourbusiness.com" required>
         </div>
         <div class="form-group" data-form-field="4">
           <label>WhatsApp Number</label>
-          <input type="tel" placeholder="+91 98XXXXXXXX" required>
+          <input type="tel" name="WhatsApp Number" placeholder="+91 98XXXXXXXX" required>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group" data-form-field="5">
           <label>Your Role</label>
-          <select required>
+          <select name="Your Role" required>
             <option value="">Select your role</option>
             <option>Owner / Founder</option>
             <option>Operations Manager</option>
@@ -1266,7 +1266,7 @@
         </div>
         <div class="form-group" data-form-field="6">
           <label>Business Type</label>
-          <select required>
+          <select name="Business Type" required>
             <option value="">Select type</option>
             <option>Restaurant / Cafe</option>
             <option>Bakery / Confectionery</option>
@@ -1281,7 +1281,7 @@
       <div class="form-row">
         <div class="form-group" data-form-field="7">
           <label>Number of Locations</label>
-          <select required>
+          <select name="Number of Locations" required>
             <option value="">Select range</option>
             <option>1 location</option>
             <option>2-3 locations</option>
@@ -1292,7 +1292,7 @@
         </div>
         <div class="form-group" data-form-field="8">
           <label>Monthly Revenue (₹)</label>
-          <select required>
+          <select name="Monthly Revenue" required>
             <option value="">Select range</option>
             <option>Under ₹5 Lakhs</option>
             <option>₹5L - ₹15L</option>
@@ -1304,7 +1304,7 @@
       </div>
       <div class="form-group" data-form-field="9">
         <label>Which Level Interests You?</label>
-        <select id="levelSelect">
+        <select id="levelSelect" name="Which Level Interests You?">
           <option value="">Not sure yet — help me decide</option>
           <option value="visibility">Level 01 — Visibility (See Everything)</option>
           <option value="control">Level 02 — Control (AI Acts on It)</option>
@@ -2323,49 +2323,53 @@
     }
   })();
 
-  // Form Submit Handler
+  // Form Submit Handler — sends to Node server (/api/submit), which writes to Airtable using .env
   function handleAuditSubmit(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const btnSpan = btn.querySelector('span');
-    
-    if (btn && btnSpan) {
-      // Animate button success state
-      if (typeof gsap !== 'undefined') {
-        gsap.to(btn, {
-          background: 'var(--green)',
-          duration: 0.3,
-          ease: 'power2.out',
-          onComplete: () => {
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const btnSpan = btn ? btn.querySelector('span') : null;
+    const data = new FormData(form);
+    const payload = {
+      'Name': data.get('Name') || '',
+      'Business Name': data.get('Business Name') || '',
+      'Email': data.get('Email') || '',
+      'WhatsApp Number': data.get('WhatsApp Number') || '',
+      'Your Role': data.get('Your Role') || '',
+      'Business Type': data.get('Business Type') || '',
+      'Number of Locations': data.get('Number of Locations') || '',
+      'Monthly Revenue': data.get('Monthly Revenue') || '',
+      'Which Level Interests You?': data.get('Which Level Interests You?') || '',
+      'Source': 'food'
+    };
+    if (btn && btnSpan) { btn.disabled = true; btnSpan.textContent = 'Sending…'; }
+    fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(r) {
+      if (r.ok) {
+        if (btn && btnSpan) {
+          if (typeof gsap !== 'undefined') {
+            gsap.to(btn, { background: 'var(--green)', duration: 0.3, ease: 'power2.out', onComplete: () => {
+              btnSpan.textContent = '✓ Audit Request Sent! We\'ll call you within 4 hours.';
+              btn.disabled = true;
+            } });
+          } else {
+            btn.style.background = 'var(--green)';
             btnSpan.textContent = '✓ Audit Request Sent! We\'ll call you within 4 hours.';
             btn.disabled = true;
-            
-            // Reset after 4 seconds
-            setTimeout(() => {
-              gsap.to(btn, {
-                background: 'var(--amber)',
-                duration: 0.3,
-                ease: 'power2.out',
-                onComplete: () => {
-                  btnSpan.textContent = 'Get My Free Operations Audit →';
-                  btn.disabled = false;
-                }
-              });
-            }, 4000);
           }
-        });
+        }
+        form.reset();
       } else {
-        // Fallback without GSAP
-        btn.style.background = 'var(--green)';
-        btnSpan.textContent = '✓ Audit Request Sent! We\'ll call you within 4 hours.';
-        btn.disabled = true;
-        setTimeout(() => {
-          btn.style.background = '';
-          btnSpan.textContent = 'Get My Free Operations Audit →';
-          btn.disabled = false;
-        }, 4000);
+        if (btn && btnSpan) { btn.disabled = false; btnSpan.textContent = 'Get My Free Operations Audit →'; }
+        alert('Something went wrong. Please try again or contact us directly.');
       }
-    }
+    }).catch(function() {
+      if (btn && btnSpan) { btn.disabled = false; btnSpan.textContent = 'Get My Free Operations Audit →'; }
+      alert('Something went wrong. Please try again or contact us directly.');
+    });
   }
 
   // Level selection from tier blocks

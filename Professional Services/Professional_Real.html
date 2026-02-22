@@ -452,28 +452,28 @@
     <h3>Start Your Revenue Leak Audit</h3>
     <p>Fill in the details. Our team will reach out within 4 hours with your personalized audit.</p>
     <form id="auditForm" onsubmit="handleAuditSubmit(event)">
-      <div class="form-group">
+      <div class="form-group" data-form-field="1">
         <label>Your Name</label>
-        <input type="text" placeholder="e.g. Priya Sharma" required>
+        <input type="text" name="Name" placeholder="e.g. Rajesh Sharma" required>
       </div>
-      <div class="form-group">
-        <label>Practice / Business Name</label>
-        <input type="text" placeholder="e.g. Sharma & Associates" required>
+      <div class="form-group" data-form-field="2">
+        <label>Business / Franchise Name</label>
+        <input type="text" name="Business Name" placeholder="e.g. Sharma's Bakery" required>
       </div>
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group" data-form-field="3">
           <label>Email</label>
-          <input type="email" placeholder="you@yourpractice.com" required>
+          <input type="email" name="Email" placeholder="you@yourbusiness.com" required>
         </div>
-        <div class="form-group">
+        <div class="form-group" data-form-field="4">
           <label>WhatsApp Number</label>
-          <input type="tel" placeholder="+91 98XXXXXXXX" required>
+          <input type="tel" name="WhatsApp Number" placeholder="+91 98XXXXXXXX" required>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group">
+        <div class="form-group" data-form-field="5">
           <label>Your Role</label>
-          <select required>
+          <select name="Your Role" required>
             <option value="">Select your role</option>
             <option>Owner / Founder</option>
             <option>Partner</option>
@@ -482,9 +482,9 @@
             <option>Other</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Profession Type</label>
-          <select required>
+        <div class="form-group" data-form-field="6">
+          <label>Business Type</label>
+          <select name="Business Type" required>
             <option value="">Select type</option>
             <option>CA Firm</option>
             <option>Financial Consultant</option>
@@ -495,19 +495,33 @@
           </select>
         </div>
       </div>
-      <div class="form-group">
-        <label>Monthly Enquiry Volume (approx.)</label>
-        <select required>
-          <option value="">Select range</option>
-          <option>Under 20 enquiries</option>
-          <option>20 – 50 enquiries</option>
-          <option>50 – 100 enquiries</option>
-          <option>100+ enquiries</option>
-        </select>
+      <div class="form-row">
+        <div class="form-group" data-form-field="7">
+          <label>Number of Locations</label>
+          <select name="Number of Locations" required>
+            <option value="">Select range</option>
+            <option>1 location</option>
+            <option>2-3 locations</option>
+            <option>4-6 locations</option>
+            <option>7-10 locations</option>
+            <option>10+ locations</option>
+          </select>
+        </div>
+        <div class="form-group" data-form-field="8">
+          <label>Monthly Revenue (₹)</label>
+          <select name="Monthly Revenue" required>
+            <option value="">Select range</option>
+            <option>Under ₹5 Lakhs</option>
+            <option>₹5L - ₹15L</option>
+            <option>₹15L - ₹30L</option>
+            <option>₹30L - ₹50L</option>
+            <option>₹50L+</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" data-form-field="9">
         <label>Which Level Interests You?</label>
-        <select id="levelSelect">
+        <select id="levelSelect" name="Which Level Interests You?">
           <option value="">Not sure yet — help me decide</option>
           <option value="visibility">Visibility — See every lead</option>
           <option value="control">Control — Auto-respond & qualify</option>
@@ -1644,45 +1658,53 @@
     }
   })();
 
-  // Form submit handler (like other landing pages)
+  // Form submit handler — sends to Node server (/api/submit), which writes to Airtable using .env
   function handleAuditSubmit(e) {
     e.preventDefault();
     const form = e.target;
     const btn = form.querySelector('.form-submit');
     const btnSpan = btn ? btn.querySelector('span') : null;
-    if (btn && btnSpan) {
-      if (typeof gsap !== 'undefined') {
-        gsap.to(btn, {
-          background: 'var(--green)',
-          duration: 0.3,
-          ease: 'power2.out',
-          onComplete: function() {
+    var data = new FormData(form);
+    var payload = {
+      'Name': data.get('Name') || '',
+      'Business Name': data.get('Business Name') || '',
+      'Email': data.get('Email') || '',
+      'WhatsApp Number': data.get('WhatsApp Number') || '',
+      'Your Role': data.get('Your Role') || '',
+      'Business Type': data.get('Business Type') || '',
+      'Number of Locations': '',
+      'Monthly Revenue': data.get('Monthly Revenue') || '',
+      'Which Level Interests You?': data.get('Which Level Interests You?') || '',
+      'Source': 'professional'
+    };
+    if (btn && btnSpan) { btn.disabled = true; btnSpan.textContent = 'Sending…'; }
+    fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(r) {
+      if (r.ok) {
+        if (btn && btnSpan) {
+          if (typeof gsap !== 'undefined') {
+            gsap.to(btn, { background: 'var(--green)', duration: 0.3, ease: 'power2.out', onComplete: function() {
+              btnSpan.textContent = '✓ Audit Request Sent! We\'ll reach out within 4 hours.';
+              btn.disabled = true;
+            } });
+          } else {
+            btn.style.background = 'var(--green)';
             btnSpan.textContent = '✓ Audit Request Sent! We\'ll reach out within 4 hours.';
             btn.disabled = true;
-            setTimeout(function() {
-              gsap.to(btn, {
-                background: 'var(--gold)',
-                duration: 0.3,
-                ease: 'power2.out',
-                onComplete: function() {
-                  btnSpan.textContent = 'Get My Free Revenue Leak Audit →';
-                  btn.disabled = false;
-                }
-              });
-            }, 4000);
           }
-        });
+        }
+        form.reset();
       } else {
-        btn.style.background = 'var(--green)';
-        btnSpan.textContent = '✓ Audit Request Sent! We\'ll reach out within 4 hours.';
-        btn.disabled = true;
-        setTimeout(function() {
-          btn.style.background = '';
-          btnSpan.textContent = 'Get My Free Revenue Leak Audit →';
-          btn.disabled = false;
-        }, 4000);
+        if (btn && btnSpan) { btn.disabled = false; btnSpan.textContent = 'Get My Free Revenue Leak Audit →'; }
+        alert('Something went wrong. Please try again or contact us directly.');
       }
-    }
+    }).catch(function() {
+      if (btn && btnSpan) { btn.disabled = false; btnSpan.textContent = 'Get My Free Revenue Leak Audit →'; }
+      alert('Something went wrong. Please try again or contact us directly.');
+    });
   }
 </script>
 </body>
