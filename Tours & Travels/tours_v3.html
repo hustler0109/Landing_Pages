@@ -732,14 +732,22 @@ section{padding:100px 8%;position:relative}
   border:1px solid rgba(184,150,80,0.2);
   color:var(--ivory);padding:14px 16px;
   font-family:'EB Garamond',serif;font-size:16px;
-  outline:none;transition:border-color 0.3s;cursor:none;
+  outline:none;transition:border-color 0.3s;
   border-radius:0;
   -webkit-appearance:none;appearance:none;
 }
+.form-input{cursor:text}
 .form-select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B89650' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 16px center;
-  padding-right:40px;
+  padding-right:40px;cursor:pointer;
+}
+.form-select option{
+  background:#1a1a1a;
+  color:#F5F0E8;
+  padding:10px 12px;
+  font-family:'EB Garamond',serif;
+  font-size:16px;
 }
 .form-input:focus,.form-select:focus{border-color:var(--gold)}
 .form-input::placeholder{color:rgba(245,240,232,0.25)}
